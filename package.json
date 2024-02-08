@@ -1,7 +1,7 @@
 {
-  "name": "wg-bg-service",
+  "name": "hello-fresh-main",
   "version": "0.0.0",
-  "description": "TypeScript + Mongoose + MongoDB + Express API Server",
+  "description": "Hello Fresh Express Server",
   "author": "",
   "license": "ISC",
   "scripts": {
