@@ -13,10 +13,12 @@ export interface IAddress {
 }
 
 export interface IUser {
+  userId: string;
   email: string;
   name: string;
   password: string;
   role: ValueOf<typeof ROLE>;
   phone: number;
   address: IAddress;
+  provider?: string;
 }
