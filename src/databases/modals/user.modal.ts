@@ -16,6 +16,12 @@ const addressSchema: Schema<IAddress & Document> = new Schema({
 });
 
 const userSchema: Schema<IUser & Document> = new Schema({
+  userId: {
+    type: String,
+    required: true,
+    unique: true,
+    index: true,
+  },
   email: {
     type: String,
     required: true,
@@ -37,6 +43,7 @@ const userSchema: Schema<IUser & Document> = new Schema({
     type: String,
     required: true,
   },
+  provider: { type: String },
 });
 
 const userModel = model<IUser & Document>('user', userSchema);

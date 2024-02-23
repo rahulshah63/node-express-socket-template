@@ -11,7 +11,7 @@ export const SUBTYPE = {
 } as const;
 
 export interface IItems {
-  id: number;
+  itemId: number;
   name: string;
   image: string;
   type: ValueOf<typeof TYPE>;

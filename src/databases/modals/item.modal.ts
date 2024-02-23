@@ -2,7 +2,7 @@ import { IItems, SUBTYPE, TYPE } from '@/interfaces/item.interface';
 import { Document, model, Schema } from 'mongoose';
 
 const itemSchema: Schema<IItems & Document> = new Schema({
-  id: {
+  itemId: {
     type: Number,
     required: true,
     unique: true,
