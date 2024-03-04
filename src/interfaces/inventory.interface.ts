@@ -1,5 +1,4 @@
 import { ValueOf } from '@/utils/util';
-import { IUser } from './user.interface';
 import { IItems } from './item.interface';
 
 export const AVAILABILITY = {
@@ -16,5 +15,5 @@ export interface IInventory {
   price: number;
   quantity: number;
   stock: ValueOf<typeof AVAILABILITY>;
-  addedBy: IUser;
+  addedBy: string;
 }

@@ -1,4 +1,4 @@
-import { IAddress, IUser, ROLE } from '@/interfaces/user.interface';
+import { IAddress, IUserDocument, ROLE } from './user.interface';
 import { Document, model, Schema } from 'mongoose';
 const addressSchema: Schema<IAddress & Document> = new Schema({
   street: {
@@ -15,7 +15,7 @@ const addressSchema: Schema<IAddress & Document> = new Schema({
   },
 });
 
-const userSchema: Schema<IUser & Document> = new Schema({
+const UserSchema: Schema<IUserDocument> = new Schema({
   userId: {
     type: String,
     required: true,
@@ -46,6 +46,6 @@ const userSchema: Schema<IUser & Document> = new Schema({
   provider: { type: String },
 });
 
-const userModel = model<IUser & Document>('user', userSchema);
+const UserModel = model('user', UserSchema);
 
-export default userModel;
+export default UserModel;

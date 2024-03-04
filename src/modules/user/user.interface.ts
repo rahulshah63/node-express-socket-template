@@ -1,10 +1,10 @@
-import { ValueOf } from '@/utils/util';
+import { Document } from 'mongoose';
 
-export const ROLE = {
-  PRODUCER: 'producer',
-  CONSUMER: 'consumer',
-  ADMIN: 'admin',
-} as const;
+export enum ROLE {
+  PRODUCER = 'producer',
+  CONSUMER = 'consumer',
+  ADMIN = 'admin',
+}
 
 export interface IAddress {
   street: string;
@@ -12,12 +12,12 @@ export interface IAddress {
   zipCode: number;
 }
 
-export interface IUser {
+export interface IUserDocument extends Document {
   userId: string;
   email: string;
   name: string;
   password: string;
-  role: ValueOf<typeof ROLE>;
+  role: ROLE;
   phone: number;
   address: IAddress;
   provider?: string;

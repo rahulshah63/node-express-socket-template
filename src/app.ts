@@ -8,35 +8,37 @@ import morgan from 'morgan';
 import { connect, set } from 'mongoose';
 import swaggerJSDoc from 'swagger-jsdoc';
 import swaggerUi from 'swagger-ui-express';
-import { NODE_ENV, PORT, LOG_FORMAT, ORIGIN, CREDENTIALS } from '@config';
-import { dbConnection } from '@databases';
+import { AppConfig } from '@/config';
 import { Routes } from '@interfaces/routes.interface';
 import errorMiddleware from '@middlewares/error.middleware';
-import { logger, stream } from '@utils/logger';
+import { config } from 'dotenv';
+import { Logger } from '@nestjs/common';
 
 class App {
   public app: express.Application;
   public env: string;
   public port: string | number;
+  public logger = new Logger();
 
   constructor(routes: Routes[]) {
+    config({ path: `.env.${process.env.NODE_ENV || 'development'}.local` });
     this.app = express();
-    this.env = NODE_ENV || 'development';
-    this.port = PORT || 3000;
+    this.env = AppConfig.env || 'development';
+    this.port = AppConfig.port || 3000;
 
     this.connectToDatabase();
     this.initializeMiddlewares();
     this.initializeRoutes(routes);
-    this.initializeSwagger();
+    // this.initializeSwagger();
     this.initializeErrorHandling();
   }
 
   public listen() {
     this.app.listen(this.port, () => {
-      logger.info(`=================================`);
-      logger.info(`======= ENV: ${this.env} =======`);
-      logger.info(`🚀 App listening on the port ${this.port}`);
-      logger.info(`=================================`);
+      this.logger.log(`=================================`);
+      this.logger.log(`======= ENV: ${this.env} =======`);
+      this.logger.log(`🚀 App listening on the port ${this.port}`);
+      this.logger.log(`=================================`);
     });
   }
 
@@ -49,12 +51,12 @@ class App {
       set('debug', true);
     }
 
-    connect(dbConnection.url);
+    connect(AppConfig.dbConnection);
   }
 
   private initializeMiddlewares() {
-    this.app.use(morgan(LOG_FORMAT, { stream }));
-    this.app.use(cors({ origin: ORIGIN, credentials: CREDENTIALS }));
+    // this.app.use(morgan(LOG_FORMAT, { stream }));
+    // this.app.use(cors({ origin: ORIGIN, credentials: CREDENTIALS }));
     this.app.use(hpp());
     this.app.use(helmet());
     this.app.use(compression());
@@ -69,21 +71,21 @@ class App {
     });
   }
 
-  private initializeSwagger() {
-    const options = {
-      swaggerDefinition: {
-        info: {
-          title: 'REST API',
-          version: '1.0.0',
-          description: 'Example docs',
-        },
-      },
-      apis: ['swagger.yaml'],
-    };
+  // private initializeSwagger() {
+  //   const options = {
+  //     swaggerDefinition: {
+  //       info: {
+  //         title: 'REST API',
+  //         version: '1.0.0',
+  //         description: 'Example docs',
+  //       },
+  //     },
+  //     apis: ['swagger.yaml'],
+  //   };
 
-    const specs = swaggerJSDoc(options);
-    this.app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
-  }
+  //   const specs = swaggerJSDoc(options);
+  //   this.app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(specs));
+  // }
 
   private initializeErrorHandling() {
     this.app.use(errorMiddleware);

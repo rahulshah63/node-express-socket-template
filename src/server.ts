@@ -1,9 +1,9 @@
 import App from '@/app';
-import IndexRoute from '@routes/index.route';
 import validateEnv from '@utils/validateEnv';
+import AuthRoute from '@/modules/auth/auth.route';
 
 validateEnv();
 
-const app = new App([new IndexRoute()]);
+const app = new App([new AuthRoute()]);
 
 app.listen();
